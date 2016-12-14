@@ -1,0 +1,16 @@
+{
+	"name": "machine-learning-samples-server",
+	"description": "Machine Leardning Samples",
+	"version": "0.0.1",
+	"dependencies": {
+		"express": "~4.14.0",
+		"body-parser": "~1.15.2"
+	},
+	"devDependencies": {
+		"mocha": "~3.2.0"
+	},
+	"scripts": {
+		"test": "node ./test/run.js ./test ../public/app/test"
+	}
+}
+  

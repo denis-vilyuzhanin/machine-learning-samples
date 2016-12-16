@@ -50,6 +50,15 @@ describe('computation', () => {
 			equalFloat(computation.derivative(func, 3), Math.exp(3));
 			equalFloat(computation.derivative(func, -3), Math.exp(-3));
 		});
+		
+		it('c = a + b', () => {
+			function func(x) {
+				return x[0] + x[1];
+			}
+			equalFloat(computation.derivative(func, [1, 2], 0), 1);
+			equalFloat(computation.derivative(func, [10, 20], 1), 1);
+			equalFloat(computation.derivative(func, [-1, 3], 0), 1);
+		});
 	});
 	
 });

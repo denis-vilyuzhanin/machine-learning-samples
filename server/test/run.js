@@ -14,7 +14,6 @@ mocha.run(function(failures) {
 
 
 function discoverPath(path) {
-	console.log('!!!!!', path);
 	if (fs.lstatSync(path).isDirectory()) {
 		discoverDirectory(path);
 	} else {

@@ -31,15 +31,17 @@ SquareLoss.prototype.update = function(args, target) {
 		return Math.pow(target - this._func(x), 2);
 	};
 	var loss = squareLossFunction(args);
-	this._totalLoss += loss;
 	this._count++;
+	this._totalLoss = this._totalLoss + (loss - this._totalLoss) / this._count;
+	
 	var lossDerivatives = [];
 	for(var i = 0; i < args.length; i++) {
 		lossDerivatives[i] = ComputeDerivative(squareLossFunction, args, i);
 		if (this._totalDerivatives.length < i + 1) {
 			this._totalDerivatives.push(0);
 		}
-		this._totalDerivatives[i] += lossDerivatives[i]; 
+		this._totalDerivatives[i] = this._totalDerivatives[i] + 
+			(lossDerivatives[i] - this._totalDerivatives[i]) / this._count;
 	}
 	
 	return {
@@ -48,7 +50,7 @@ SquareLoss.prototype.update = function(args, target) {
 	};
 }
 SquareLoss.prototype.total = function() {
-	return this._totalLoss / this._count;
+	return this._totalLoss;
 }
 
 SquareLoss.prototype.derivatives = function() {

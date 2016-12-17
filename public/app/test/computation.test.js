@@ -110,6 +110,19 @@ describe('computation', () => {
 				
 				equalFloat(loss.total(), 0.5 * ((error1 * error1) + (error2 * error2)), "total loss");
 			});
+			
+			it ('error compensation', () => {
+				var loss = new computation.loss.Square(func);
+				const a = 2, b = 1
+				const x = 3, error = 0.2;
+				//when
+				var loss = loss.update([a, x, b], func([a, x, b]) + error)
+				//then
+				console.log(loss.derivatives);
+				var ac = a - loss.derivatives[0];
+				var bc = b + loss.derivatives[2];
+				//equalFloat((func([ac, x, bc]) + error), func([a, x, b]), "Compensated error")
+			});
 		});
 	});
 });

@@ -97,17 +97,18 @@ describe('computation', () => {
 				equalFloat(loss.total(), 0.0);
 			});
 			
-			it ('target = actual + 0.2', () => {
+			it ('target = actual + someError', () => {
 				var loss = new computation.loss.Square(func);
-
-				const a1 = 2, x1 = 3, b1 = 1, error1 = 0.2;
-				equalLoss(loss.update([a1, x1, b1], func([a1, x1, b1]) + error1), 
-						  {loss: error1 * error1, derivatives: [-2 * x1 * error1, -2 * a1 * error1,  -2 * error1]});
+				const a = 2, b = 1
+				const x1 = 3, error1 = 0.2;
+				equalLoss(loss.update([a, x1, b], func([a, x1, b]) + error1), 
+						  {loss: error1 * error1, derivatives: [-2 * x1 * error1, -2 * a * error1,  -2 * error1]});
 				
-				const a1 = 2, x1 = 3, b1 = 1, error1 = 0.2;
-				/*equalLoss(loss.update([3, 2, 2], func([3, 2, 2]) + 0.2), 
-						  {loss: 0.04, derivatives: [0.0, 0.0]});
-				equalFloat(loss.total(), 0.0, "total loss");*/
+				const x2 = 5, error2 = 0.1;
+				equalLoss(loss.update([a, x2, b], func([a, x2, b]) + error2), 
+						  {loss: error2 * error2, derivatives: [-2 * x2 * error2, -2 * a * error2,  -2 * error2]});
+				
+				equalFloat(loss.total(), 0.5 * ((error1 * error1) + (error2 * error2)), "total loss");
 			});
 		});
 	});

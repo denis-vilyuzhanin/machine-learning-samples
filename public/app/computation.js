@@ -4,34 +4,6 @@
 
 const DERIVATIVE_STEP = 0.00000001;
 
-function FunctionDefinition() {
-}
-
-function FunctionDefinition(arg1, arg2) {
-	
-}
-FunctionDefinition.prototype.specify = function(parameters) {
-	return null;
-}
-FunctionDefinition.prototype.evaluate = function(arguments) {
-	return null;
-}
-
-function FunctionEvaluation(definition) {
-	
-}
-
-
-
-var func = DefineFunction(['a', 'b','c', 'x[2]'], function(a, b, c, x){
-	return a * x[0] + b * x[1] + c;
-});
-
-func.;
-
-var func1 = func.specify({a: 10, b: 20, c:12});
-func.evaluate().set('x', [10, 20]).result();
-
 
 function ComputeDerivative(func, argument, index) {
 	if (Array.isArray(argument)) {
@@ -60,7 +32,7 @@ SquareLoss.prototype.update = function(args, target) {
 	};
 	var loss = squareLossFunction(args);
 	this._totalLoss += loss;
-	
+	this._count++;
 	var lossDerivatives = [];
 	for(var i = 0; i < args.length; i++) {
 		lossDerivatives[i] = ComputeDerivative(squareLossFunction, args, i);
@@ -69,7 +41,7 @@ SquareLoss.prototype.update = function(args, target) {
 		}
 		this._totalDerivatives[i] += lossDerivatives[i]; 
 	}
-	this._count++;
+	
 	return {
 		loss: loss,
 		derivatives: lossDerivatives

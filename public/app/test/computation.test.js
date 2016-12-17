@@ -59,6 +59,15 @@ describe('computation', () => {
 			equalFloat(computation.derivative(func, [10, 20], 1), 1);
 			equalFloat(computation.derivative(func, [-1, 3], 0), 1);
 		});
+		
+		it('c = x * x * a + b', () => {
+			function func(args) {
+				return Math.pow(args[0], 2) * args[1] + args[2];
+			}
+			equalFloat(computation.derivative(func, [3, 2, 5], 0), 2 * 3 * 2);
+			equalFloat(computation.derivative(func, [3, 2, 5], 1), 3 * 3);
+			equalFloat(computation.derivative(func, [3, 2, 5], 2), 1);
+		});
 	});
 	
 });

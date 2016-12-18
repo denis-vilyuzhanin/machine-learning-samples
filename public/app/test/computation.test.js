@@ -4,6 +4,45 @@ const computation = require('../computation');
 
 
 describe('computation', () => {
+	describe('function', () => {
+		it('constant', () => {
+			var constFunction = computation.define(function(){
+				return 10;
+			});
+			assert.equal(10, constFunction());
+		});
+		it('simple', () => {
+			var constFunction = computation.define(function(){
+				return this.x;
+			});
+			assert.equal(10, constFunction({x: 10}));
+			assert.equal(20, constFunction({x: 20}));
+		});
+		
+		it('line', () => {
+			var lineFunc = computation.define(function(){
+				return this.a * this.x + this.b;
+			});
+			assert.equal(30, lineFunc({a: 2, b: 10, x: 10}));
+			//assert.equal(20, constFunction({x: 20}));
+		});
+		
+		it('linear function', () => {
+			var func = computation.define(function(){
+				if (this.a.length != this.x.length) {
+					throw new Error('Number of parameters "a" must be the same as numner of parameters b');
+				}
+				var sum = 0;
+				for(var i = 0; i < this.a.length; i++) {
+					sum += this.a[i] * this.x[i];
+				}
+				sum += this.b;
+				return sum;
+			});
+			assert.equal(1 * 10 + 3 * 100 + 10, func({a: [1, 3], b: 10, x: [10, 100]}));
+			//assert.equal(20, constFunction({x: 20}));
+		});
+	});
 	describe('derivative', () => {
 		it('y = const', () => {
 			function func(x) {
@@ -118,7 +157,7 @@ describe('computation', () => {
 				//when
 				var loss = loss.update([a, x, b], func([a, x, b]) + error)
 				//then
-				console.log(loss.derivatives);
+				
 				var ac = a - loss.derivatives[0];
 				var bc = b + loss.derivatives[2];
 				//equalFloat((func([ac, x, bc]) + error), func([a, x, b]), "Compensated error")

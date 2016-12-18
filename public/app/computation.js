@@ -19,6 +19,13 @@ function ComputeDerivative(func, argument, index) {
 }
 
 
+function DefineFunction(code) {
+	return function(arguments) {
+		return code.call(arguments);
+	}
+	
+}
+
 
 function SquareLoss(func) {
 	this._func = func;
@@ -59,6 +66,7 @@ SquareLoss.prototype.derivatives = function() {
 
 var exports = {
 	DERIVATIVE_STEP: DERIVATIVE_STEP,
+	define: DefineFunction,
 	derivative: ComputeDerivative,
 	loss: {
 		Square: SquareLoss 

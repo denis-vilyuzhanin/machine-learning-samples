@@ -20,12 +20,33 @@ function ComputeDerivative(func, argument, index) {
 
 
 function DefineFunction(code) {
-	return function(arguments) {
-		return code.call(arguments);
+	var func = function(args) {
+		return code.call(args);
 	}
-	
+	func.derivativeBy = function(argument, index) {
+		return function(args) {
+			var result1 = code.call(args);
+			var newArguments = {};
+			Object.keys(args).forEach(function(key) {
+				var value = args[ key ];
+				if (key == argument) {
+					if (Array.isArray(value)) {
+						value = value.slice(0);
+						value[index] = value[index] + DERIVATIVE_STEP;
+					} else {
+						value = value + DERIVATIVE_STEP;
+					}
+				}
+				newArguments[ key ] = value;
+			}); 
+			
+			var result2 = code.call(newArguments);
+			
+			return (result2 - result1) / DERIVATIVE_STEP;
+		}
+	}
+	return func;
 }
-
 
 function SquareLoss(func) {
 	this._func = func;

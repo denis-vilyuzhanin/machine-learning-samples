@@ -42,6 +42,31 @@ describe('computation', () => {
 			assert.equal(1 * 10 + 3 * 100 + 10, func({a: [1, 3], b: 10, x: [10, 100]}));
 			//assert.equal(20, constFunction({x: 20}));
 		});
+		
+		describe('derivative', () => {
+			it('constFunction', () => {
+				var constFunction = computation.define(function(){
+					return 10; 
+				});
+				var derivative = constFunction.derivativeBy('x');
+				assert.equal(0, derivative({x: 10}));
+			});
+			
+			it('lineFunction', () => {
+				var constFunction = computation.define(function(){
+					return this.a * this.x + this.b; 
+				});
+				var derivativeByX = constFunction.derivativeBy('x');
+				equalFloat(5, derivativeByX({a: 5, x: 10, b: 30}));
+				
+				var derivativeByA = constFunction.derivativeBy('a');
+				equalFloat(10, derivativeByA({a: 5, x: 10, b: 30}));
+				
+				var derivativeByB = constFunction.derivativeBy('b');
+				equalFloat(1, derivativeByB({a: 5, x: 10, b: 30}));
+			});
+		});
+		
 	});
 	describe('derivative', () => {
 		it('y = const', () => {
